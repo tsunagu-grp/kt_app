@@ -21,7 +21,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron": "electron ."
+    "electron": "electron .",
+    "package": "yarn build && electron-packager . my-app --platform=all --prune --out=release --overwrite"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "electron": "^7.1.9",
+    "electron-packager": "^14.2.0",
     "husky": "^4.0.10"
   }
 }
