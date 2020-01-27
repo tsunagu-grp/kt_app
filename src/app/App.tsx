@@ -1,11 +1,10 @@
 import React from 'react';
 import './App.css';
+import ShowClock from '../containers/ShowClock'
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      Clock！！！！
-    </div>
+    <ShowClock />
   );
 }
 
