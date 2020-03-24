@@ -1,21 +1,10 @@
-import React,{useState,useEffect} from 'react';
+import React from 'react';
 import Clock from '../components/Clock'
+import {Props} from '../types/ShowClock.types'
 
-const ShowClock: React.FC = () => {
-  const [date, setDate] = useState(new Date());
-  const nextTiming = 1000 - (Date.now() % 1000);
-
-  useEffect(() => {
-    let timer = setTimeout(() => {
-      setDate(new Date());
-    }, nextTiming);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [date, nextTiming]);
-
+const ShowClock: React.FC<Props> = ({date}) => {
   return (
-    <Clock year={date.getFullYear()} month={date.getMonth()+1} day={date.getDate()} hour={date.getHours()} minute={date.getMinutes()} second={date.getSeconds()} weekDay={date.getDay()}  />
+    <Clock date={date}  />
   );
 }
 
