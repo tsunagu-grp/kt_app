@@ -1,17 +1,23 @@
 import React, { useEffect,useCallback } from 'react';
 import {Props} from '../types/Calendar.types'
+require('dotenv').config({ path: __dirname + '/../.env' });
 
 const Calendar: React.FC<Props> = ({dateFrom,dateTo}) => {
 
+  const clientId = process.env.REACT_APP_CLIENTID;
+  const discoveryDocs = process.env.REACT_APP_DISCOVERYDOCS;
+  const scope = process.env.REACT_APP_SCOPE;
+  const path = process.env.REACT_APP_PATH;
+
   const initClient = useCallback(() => {
     gapi.client.init({
-      clientId: '334809568162-vl9nn803jdobffhv35lg80r3b7or2mqf.apps.googleusercontent.com',
-      discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
-      scope: 'https://www.googleapis.com/auth/calendar.readonly'
+      clientId: clientId,
+      discoveryDocs: [discoveryDocs ? discoveryDocs:''],
+      scope: scope
     }).then(function () {
       gapi.auth2.getAuthInstance().signIn();
       const restRequest = gapi.client.request({
-        'path': `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${dateFrom}&timeMax=${dateTo}`
+        'path': `${path}?timeMin=${dateFrom}&timeMax=${dateTo}`
       });
       restRequest.execute((events) => {
         console.dir(events);
@@ -19,7 +25,7 @@ const Calendar: React.FC<Props> = ({dateFrom,dateTo}) => {
     }, function(error) {
       console.log(JSON.stringify(error, null, 2));
     });
-  },[dateFrom, dateTo])
+  },[clientId, dateFrom, dateTo, discoveryDocs, path, scope])
 
   useEffect(()=>{
     gapi.load('client:auth2', initClient)
