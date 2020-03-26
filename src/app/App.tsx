@@ -1,9 +1,9 @@
-import React,{useState,useEffect} from 'react';
 import './App.css';
-import ShowClock from '../containers/ShowClock'
-import Calendar from '../containers/Calendar'
 import '../styles/tailwind.css';
-import {getYear,getMonth,getDay,getDateFrom,getDateTo} from '../util/date'
+import React, {useEffect, useState} from 'react';
+import Calendar from '../containers/Calendar';
+import ShowClock from '../containers/ShowClock';
+import {getDateFrom, getDateTo, getDay, getMonth, getYear} from '../util/date';
 
 const App: React.FC = () => {
   const initialDate = new Date();
@@ -11,10 +11,10 @@ const App: React.FC = () => {
   const nextTiming = 1000 - (Date.now() % 1000);
 
   const yaer = getYear(date);
-      const month = getMonth(date);
-      const day = getDay(date);
-      const dateFrom = getDateFrom(yaer + '-' + month + '-' + day);
-      const dateTo = getDateTo(yaer + '-' + month + '-' + day);
+  const month = getMonth(date);
+  const day = getDay(date);
+  const dateFrom = getDateFrom(`${yaer}-${month}-${day}`);
+  const dateTo = getDateTo(`${yaer}-${month}-${day}`);
 
   useEffect(() => {
     let timer = setTimeout(() => {
@@ -31,6 +31,6 @@ const App: React.FC = () => {
       <Calendar dateFrom={dateFrom} dateTo={dateTo} />
     </>
   );
-}
+};
 
 export default App;
