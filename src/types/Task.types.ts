@@ -1,4 +1,5 @@
 export type Props = {
   summary: string;
-  start: string;
+  startDate: string;
+  startTime: string;
 };

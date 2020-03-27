@@ -1,22 +1,12 @@
 import dotenv from 'dotenv';
-import {Events} from '../types/ShowTask.types';
-import {getDateFrom, getDateTo, getDay, getMonth, getYear} from '../util/date';
+import {Events, Props} from '../types/ShowTask.types';
 
-dotenv.config({path: __dirname + '/../.env'});
-
-const clientId = process.env.REACT_APP_CLIENTID;
-const discoveryDocs = process.env.REACT_APP_DISCOVERYDOCS;
-const scope = process.env.REACT_APP_SCOPE;
-const path = process.env.REACT_APP_PATH;
-
-const date = new Date();
-const yaer = getYear(date);
-const month = getMonth(date);
-const day = getDay(date);
-const dateFrom = getDateFrom(`${yaer}-${month}-${day}`);
-const dateTo = getDateTo(`${yaer}-${month}-${day}`);
-
-export const initClient = () => {
+export const initClient = (props: Props) => {
+  dotenv.config({path: __dirname + '/../.env'});
+  const clientId = process.env.REACT_APP_CLIENTID;
+  const discoveryDocs = process.env.REACT_APP_DISCOVERYDOCS;
+  const scope = process.env.REACT_APP_SCOPE;
+  const path = process.env.REACT_APP_PATH;
   return new Promise<Events>(resolve => {
     gapi.load('client:auth2', () => {
       gapi.client
@@ -29,7 +19,7 @@ export const initClient = () => {
           () => {
             gapi.auth2.getAuthInstance().signIn();
             const restRequest = gapi.client.request({
-              path: `${path}?timeMin=${dateFrom}&timeMax=${dateTo}`,
+              path: `${path}?timeMin=${props.dateFrom}&timeMax=${props.dateTo}`,
             });
             restRequest.execute((res: any) => {
               resolve(res.items);
