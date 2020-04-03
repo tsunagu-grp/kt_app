@@ -16,7 +16,11 @@ const App: React.FC = () => {
   return (
     <>
       <ShowClock initialDate={date} />
-      <ShowTask dateFrom={dateFrom} dateTo={dateTo} />
+      <ShowTask
+        dateFrom={dateFrom}
+        dateTo={dateTo}
+        today={`${yaer}-${month}-${day}`}
+      />
     </>
   );
 };
