@@ -1,9 +1,19 @@
+export type calendarEvents = Array<{
+  summary: string;
+  start: {
+    dateTime: string;
+    date: string;
+  };
+}>;
+
 export type Events = Array<{
   summary: string;
-  start: {dateTime: string};
+  startDate: string;
+  startTime: string;
 }>;
 
 export type Props = {
   dateFrom: string;
   dateTo: string;
+  today: string;
 };
