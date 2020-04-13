@@ -4,7 +4,6 @@ import React from 'react';
 import ShowClock from '../containers/ShowClock';
 import ShowTask from '../containers/ShowTask';
 import {getDateFrom, getDateTo, getDay, getMonth, getYear} from '../util/date';
-const electron = window.require('electron');
 
 const App: React.FC = () => {
   const date = new Date();
@@ -13,13 +12,6 @@ const App: React.FC = () => {
   const day = getDay(date);
   const dateFrom = getDateFrom(`${yaer}-${month}-${day}`);
   const dateTo = getDateTo(`${yaer}-${month}-${day}`);
-
-  /**
-   * Electron用
-   */
-  const ipcRenderer = electron.ipcRenderer;
-
-  ipcRenderer.send('notifyText', 'hogehoge');
 
   return (
     <>

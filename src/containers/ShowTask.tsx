@@ -5,12 +5,16 @@ import {initClient} from '../api';
 import Task from '../components/Task';
 import TaskButton from '../components/TaskButton';
 import {Events, Props} from '../types/ShowTask.types';
+const electron = window.require('electron');
+
 dayjs.locale('ja');
 const ShowTask: React.FC<Props> = ({dateFrom, dateTo, today}) => {
   const [events, setEvents] = useState<Events>([]);
   const [signed, setSigned] = useState<boolean>(false);
 
+  const ipcRenderer = electron.ipcRenderer;
   const getEvents = async () => {
+    ipcRenderer.send('notifyText', 'hogehoge');
     const calendarEvents = await initClient(dateFrom, dateTo);
     const eventsList = calendarEvents
       .filter(el => (el.start.date || today) === today)
