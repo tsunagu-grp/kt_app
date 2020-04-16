@@ -5,7 +5,7 @@ const url = require('url');
 const {google} = require('googleapis');
 // const {OAuth2Client} = require('google-auth-library');
 const http = require('http');
-const open = require('open');
+const ElectronGoogleOAuth2 = require('@getstation/electron-google-oauth2');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -40,9 +40,16 @@ function createWindow() {
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
+    // when you  should delete the corresponding element.
     mainWindow = null;
   });
+
+  const myApiOauth = new ElectronGoogleOAuth2(
+    '334809568162-vl9nn803jdobffhv35lg80r3b7or2mqf.apps.googleusercontent.com',
+    'es83IG--E_drxF_oQ_QP1T3H',
+    ['https://www.googleapis.com/auth/calendar.readonly']
+  );
+  console.log(myApiOauth)
 }
 
 // This method will be called when Electron has finished
@@ -106,6 +113,11 @@ ipcMain.on('notifyText', (event, args) => {
     scope: 'https://www.googleapis.com/auth/calendar.readonly',
   });
   console.log(authorizeUrl);
+  // mainWindow.loadURL(authorizeUrl);
+  // mainWindow.webContents.on('did-get-redirect-request', function(event, oldUrl, newUrl) {
+  //   let query = queryString.parse(Url.parse(newUrl).query)
+  //   console.log(query)
+  // })
   let child = new BrowserWindow({
     parent: mainWindow,
     modal: true,
@@ -118,19 +130,20 @@ ipcMain.on('notifyText', (event, args) => {
   const server = http
     .createServer(async (req, res) => {
       try {
-        const code = req.url.split('=')[1].split('&')[0];
-        console.log(code);
-        const {tokens} = await oAuth2Client.getToken(code);
-        console.log(tokens);
-        child.close();
+        // const code = req.url.split('=')[1].split('&')[0];
+        // console.log(code);
+        // const {tokens} = await oAuth2Client.getToken(code);
+        // console.log(tokens);
+        // child.close();
       } catch (e) {
         console.log(e);
-        // reject(e);
       }
     })
     .listen(3000, () => {
       child.loadURL(authorizeUrl);
       child.webContents.on('will-navigate', function (event, newUrl) {
+        console.log(event, newUrl)
+        child.close();
         // console.log('file:/' + path.join(__dirname, '/../build/index.html'));
       });
     });

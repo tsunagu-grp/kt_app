@@ -1081,6 +1081,13 @@
     global-agent "^2.0.2"
     global-tunnel-ng "^2.7.1"
 
+"@getstation/electron-google-oauth2@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@getstation/electron-google-oauth2/-/electron-google-oauth2-2.1.0.tgz#ed0c489c7f97bf9e4542b599c45e6f7a6ece8b54"
+  integrity sha512-lWoyxkeqFP1eHkka918eq9649vtiKjQaaQlPH22f6DTMGXg+K3HmzgaE3cPGUIavQFHoDpPJE138V/FiJnPVYw==
+  dependencies:
+    google-auth-library "^5.9.2"
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -5576,7 +5583,7 @@ globby@^6.1.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-google-auth-library@^5.6.1:
+google-auth-library@^5.6.1, google-auth-library@^5.9.2:
   version "5.10.1"
   resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-5.10.1.tgz#504ec75487ad140e68dd577c21affa363c87ddff"
   integrity sha512-rOlaok5vlpV9rSiUu5EpR0vVpc+PhN62oF4RyX/6++DG1VsaulAFEMlDYBLjJDDPI6OcNOCGAKy9UVB/3NIDXg==
@@ -9838,7 +9845,7 @@ querystring-es3@^0.2.0:
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
   integrity sha1-nsYfeQSYdXB9aUFFlv2Qek1xHnM=
 
-querystring@0.2.0:
+querystring@0.2.0, querystring@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
   integrity sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=
