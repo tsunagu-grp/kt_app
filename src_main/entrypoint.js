@@ -5,7 +5,6 @@ const url = require('url');
 const {google} = require('googleapis');
 // const {OAuth2Client} = require('google-auth-library');
 const http = require('http');
-const ElectronGoogleOAuth2 = require('@getstation/electron-google-oauth2');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -43,13 +42,6 @@ function createWindow() {
     // when you  should delete the corresponding element.
     mainWindow = null;
   });
-
-  const myApiOauth = new ElectronGoogleOAuth2(
-    '334809568162-vl9nn803jdobffhv35lg80r3b7or2mqf.apps.googleusercontent.com',
-    'es83IG--E_drxF_oQ_QP1T3H',
-    ['https://www.googleapis.com/auth/calendar.readonly']
-  );
-  console.log(myApiOauth)
 }
 
 // This method will be called when Electron has finished
@@ -70,36 +62,6 @@ app.on('activate', function () {
   if (mainWindow === null) createWindow();
 });
 
-// listEvents();
-/**
- * Renderプロセスからの通知を受信
- */
-// function requestOAuthCode(reject, resolve) {
-//   return new Promise((resolve, reject) => {
-//     let url = this.oAuth2Client.generateAuthUrl({
-//       access_type: 'offline',
-//       scope: this.scopes,
-//     });
-//     // chrominumからHTTPアクセスをしてGoogle認証確認画面を表示させる
-//     this.browser.loadURL(url);
-//     // Google API 認証情報で設定したリダイレクト先が表示されたときのイベント
-//     this.browser.webContents.on(
-//       'did-get-redirect-request',
-//       (event, oldUrl, newUrl) => {
-//         let query = queryString.parse(Url.parse(newUrl).query);
-//         if (query.error || !query.code) return reject(query.error, null);
-//         this.browser.loadURL(
-//           Url.format({
-//             pathname: this.callbackUrl,
-//             protocol: 'file:',
-//             slashes: true,
-//           }),
-//         );
-//         return resolve(query.code);
-//       },
-//     );
-//   });
-// }
 ipcMain.on('notifyText', (event, args) => {
   const oAuth2Client = new google.auth.OAuth2(
     '334809568162-vl9nn803jdobffhv35lg80r3b7or2mqf.apps.googleusercontent.com',
@@ -112,58 +74,60 @@ ipcMain.on('notifyText', (event, args) => {
     access_type: 'offline',
     scope: 'https://www.googleapis.com/auth/calendar.readonly',
   });
-  console.log(authorizeUrl);
-  // mainWindow.loadURL(authorizeUrl);
-  // mainWindow.webContents.on('did-get-redirect-request', function(event, oldUrl, newUrl) {
-  //   let query = queryString.parse(Url.parse(newUrl).query)
-  //   console.log(query)
-  // })
   let child = new BrowserWindow({
     parent: mainWindow,
-    modal: true,
     show: true,
     webPreferences: {
       webSecurity: false,
       nodeIntegration: true,
     },
   });
-  const server = http
-    .createServer(async (req, res) => {
-      try {
-        // const code = req.url.split('=')[1].split('&')[0];
-        // console.log(code);
-        // const {tokens} = await oAuth2Client.getToken(code);
-        // console.log(tokens);
-        // child.close();
-      } catch (e) {
-        console.log(e);
-      }
-    })
-    .listen(3000, () => {
-      child.loadURL(authorizeUrl);
-      child.webContents.on('will-navigate', function (event, newUrl) {
-        console.log(event, newUrl)
-        child.close();
-        // console.log('file:/' + path.join(__dirname, '/../build/index.html'));
-      });
-    });
+  const getNewToken = (authUrl, callback) => {
+    child.loadURL(authUrl);
+    const server = http
+      .createServer(async (req, res) => {
+        try {
+          var q = url.parse(req.url, true).query;
+          const code = q.code;
+          if (!code) return;
+
+          oAuth2Client.getToken(code, (err, token) => {
+            if (err)
+              return console.error(
+                'Error while trying to retrieve access token',
+                err,
+              );
+            console.log(token);
+            oAuth2Client.setCredentials(token);
+            if (child) child.close();
+            server.close(err => {
+              if (err) return console.log(err);
+              console.log('Server closed');
+            });
+            callback(oAuth2Client);
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      })
+      .listen(3000);
+  };
+
+  const listEvents = auth => {
+    console.log('callback');
+    const calendar = google.calendar({version: 'v3', auth});
+    calendar.events.list(
+      {
+        calendarId: 'primary',
+      },
+      (err, res) => {
+        console.log(res);
+      },
+    );
+  };
+
+  getNewToken(authorizeUrl, listEvents);
 });
-// function listEvents(auth) {
-//   const calendar = google.calendar({version: 'v3', auth});
-//   calendar.events.list(
-//     {
-//       calendarId: 'primary',
-//       timeMin: new Date().toISOString(),
-//       maxResults: 10,
-//       singleEvents: true,
-//       orderBy: 'startTime',
-//     },
-//     (err, res) => {
-//       console.log(err, res);
-//     },
-//   );
-// }
-// });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
