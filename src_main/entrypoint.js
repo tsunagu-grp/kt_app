@@ -5,6 +5,7 @@ const url = require('url');
 const {google} = require('googleapis');
 // const {OAuth2Client} = require('google-auth-library');
 const http = require('http');
+const dayjs = require('dayjs');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -115,13 +116,28 @@ ipcMain.on('notifyText', (event, args) => {
 
   const listEvents = auth => {
     console.log('callback');
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    console.log(`${year}-${month}-${day}`);
+    const timeMin = dayjs(
+      `${year}-${month}-${day}` + 'T00:00:00.000Z',
+    ).toISOString();
+    const timeMax = dayjs(
+      `${year}-${month}-${day}` + 'T23:59:59.999Z',
+    ).toISOString();
+
     const calendar = google.calendar({version: 'v3', auth});
     calendar.events.list(
       {
         calendarId: 'primary',
+        timeMin: timeMin,
+        timeMax: timeMax,
       },
       (err, res) => {
         console.log(res);
+        event.reply('reply', res.data);
       },
     );
   };
