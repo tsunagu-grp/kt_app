@@ -13,7 +13,5 @@ export type Events = Array<{
 }>;
 
 export type Props = {
-  dateFrom: string;
-  dateTo: string;
   today: string;
 };
