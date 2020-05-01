@@ -15,7 +15,7 @@ const ShowTask: React.FC<Props> = ({today}) => {
   const ipcRenderer = electron.ipcRenderer;
 
   const getEvents = async () => {
-    ipcRenderer.send('notifyText', 'hogehoge');
+    ipcRenderer.send('signin', 'hogehoge');
     ipcRenderer.on('reply', (_: any, data: any) => {
       console.log('ipcRequest', data);
       const response: calendarEvents = data.items;

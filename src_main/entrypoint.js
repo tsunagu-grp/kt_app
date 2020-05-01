@@ -63,7 +63,7 @@ app.on('activate', function () {
   if (mainWindow === null) createWindow();
 });
 
-ipcMain.on('notifyText', (event, args) => {
+ipcMain.on('signin', (event, args) => {
   const oAuth2Client = new google.auth.OAuth2(
     '334809568162-vl9nn803jdobffhv35lg80r3b7or2mqf.apps.googleusercontent.com',
     'es83IG--E_drxF_oQ_QP1T3H',
