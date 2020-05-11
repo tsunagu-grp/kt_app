@@ -13,8 +13,8 @@ let mainWindow;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 600,
+    height: 400,
     webPreferences: {
       webSecurity: false,
       nodeIntegration: true,
@@ -98,7 +98,6 @@ ipcMain.on('signin', (event, args) => {
                 'Error while trying to retrieve access token',
                 err,
               );
-            console.log(token);
             oAuth2Client.setCredentials(token);
             if (child) child.close();
             server.close(err => {
@@ -115,12 +114,10 @@ ipcMain.on('signin', (event, args) => {
   };
 
   const listEvents = auth => {
-    console.log('callback');
     const date = new Date();
     const year = date.getFullYear();
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
-    console.log(`${year}-${month}-${day}`);
     const timeMin = dayjs(
       `${year}-${month}-${day}` + 'T00:00:00.000Z',
     ).toISOString();
@@ -136,7 +133,6 @@ ipcMain.on('signin', (event, args) => {
         timeMax: timeMax,
       },
       (err, res) => {
-        console.log(res);
         event.reply('reply', res.data);
       },
     );

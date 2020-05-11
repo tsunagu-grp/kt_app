@@ -17,9 +17,7 @@ const ShowTask: React.FC<Props> = ({today}) => {
   const getEvents = async () => {
     ipcRenderer.send('signin', 'hogehoge');
     ipcRenderer.on('reply', (_: any, data: any) => {
-      console.log('ipcRequest', data);
       const response: calendarEvents = data.items;
-      console.log(response);
       const eventsList = response
         .filter(el => (el.start.date || today) === today)
         .map(val => {
