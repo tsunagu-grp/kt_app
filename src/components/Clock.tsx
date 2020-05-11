@@ -11,7 +11,7 @@ import {
 
 const Clock: React.FC<Props> = ({date}) => {
   return (
-    <div className="App flex justify-center items-center h-screen">
+    <div className="App flex justify-center items-center mt-8">
       <div>
         <div className="flex justify-center text-6xl">
           <span>{getYear(date)}年</span>

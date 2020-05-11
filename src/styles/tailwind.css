@@ -10400,11 +10400,11 @@ video {
 }
 
 .text-6xl {
-  font-size: 4rem;
+  font-size: 3rem;
 }
 
 .text-7xl {
-  font-size: 12rem;
+  font-size: 6rem;
 }
 
 .italic {
@@ -23045,11 +23045,11 @@ video {
   }
 
   .sm\:text-6xl {
-    font-size: 4rem;
+    font-size: 3rem;
   }
 
   .sm\:text-7xl {
-    font-size: 12rem;
+    font-size: 6rem;
   }
 
   .sm\:italic {
@@ -35691,11 +35691,11 @@ video {
   }
 
   .md\:text-6xl {
-    font-size: 4rem;
+    font-size: 3rem;
   }
 
   .md\:text-7xl {
-    font-size: 12rem;
+    font-size: 6rem;
   }
 
   .md\:italic {
@@ -48337,11 +48337,11 @@ video {
   }
 
   .lg\:text-6xl {
-    font-size: 4rem;
+    font-size: 3rem;
   }
 
   .lg\:text-7xl {
-    font-size: 12rem;
+    font-size: 6rem;
   }
 
   .lg\:italic {
@@ -60983,11 +60983,11 @@ video {
   }
 
   .xl\:text-6xl {
-    font-size: 4rem;
+    font-size: 3rem;
   }
 
   .xl\:text-7xl {
-    font-size: 12rem;
+    font-size: 6rem;
   }
 
   .xl\:italic {
